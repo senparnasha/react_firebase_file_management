@@ -1,13 +1,21 @@
+import "./App.css";
 
-import './App.css';
-import Homepage from './pages/Homepage/Homepage';
+import { Route, Routes } from "react-router-dom";
+import { Login,Register,Homepage,DashboardPage } from "./pages";
 
-const App=() =>{
+const App = () => {
   return (
     <div className="App">
-      <Homepage/>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register/>} />
+        
+        <Route path="/dashboard" element={<DashboardPage/>} />
+
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
