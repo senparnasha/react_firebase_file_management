@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { UseSelector, shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Navbar from "../../components/HomepageComponents/DashboardComponents/Navbar/Navbar";
 import SubBar from "../../components/HomepageComponents/DashboardComponents/Navbar/SubBar/SubBar";
 import HomeComponent from "../../components/HomepageComponents/DashboardComponents/HomeComponent/HomeComponent";
@@ -40,7 +40,10 @@ const DashboardPage = () => {
       )}
       <Navbar />
       <SubBar setIsCreateFolderModalOpen={setIsCreateFolderModalOpen} />
-      <HomeComponent />
+      <Routes>
+        <Route path="" element={<HomeComponent />}/>
+      </Routes>
+      
     </>
   );
 };
