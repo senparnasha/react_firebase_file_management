@@ -7,6 +7,7 @@ import SubBar from "../../components/HomepageComponents/DashboardComponents/Navb
 import HomeComponent from "../../components/HomepageComponents/DashboardComponents/HomeComponent/HomeComponent";
 import CreateFolder from "../../components/HomepageComponents/DashboardComponents/CreateFolder/CreateFolder";
 import { getFolders } from "../../redux/actionCreators/fileFoldersActionCreator";
+import FolderComponent from "../../components/HomepageComponents/DashboardComponents/FolderComponent/FolderComponent";
 
 const DashboardPage = () => {
   const [isCreateFolderModalOpen, setIsCreateFolderModalOpen] = useState(false);
@@ -42,6 +43,7 @@ const DashboardPage = () => {
       <SubBar setIsCreateFolderModalOpen={setIsCreateFolderModalOpen} />
       <Routes>
         <Route path="" element={<HomeComponent />}/>
+        <Route path="folder/:folderId" element={<FolderComponent/>}/>
       </Routes>
       
     </>

@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileAlt, faFolder } from "@fortawesome/free-solid-svg-icons";
 
 const ShowItems = ({ title, items, type }) => {
+
+  console.log("tan=>", items[0].data);
   return (
     <div className="w-100">
       <h4 className="text-center border-bottom py-2">{title}</h4>
@@ -19,7 +21,7 @@ const ShowItems = ({ title, items, type }) => {
               ) : (
                 <FontAwesomeIcon icon={faFileAlt} size="4x" className="mb-3" />
               )}
-              {item.name}
+              {item.data.name}
             </p>
           );
         })}

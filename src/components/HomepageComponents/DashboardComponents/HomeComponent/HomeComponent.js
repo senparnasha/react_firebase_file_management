@@ -4,7 +4,9 @@ import { shallowEqual, useSelector } from "react-redux";
 
 const HomeComponent = () => {
   const folders = ["New folder", "new folder 2"];
-  const files = [{name:"New file"}, {name:"new file 2"}];
+  const files = [{data:{name:"New file"}},{data:{name:"New file 2"}}
+    
+  ];
 
   const { isLoading, userFolders } = useSelector(
     (state) => ({
@@ -13,6 +15,8 @@ const HomeComponent = () => {
     }),
     shallowEqual
   );
+
+  console.log("==>", userFolders)
 
   return (
     <div className="col-md-12 w-100">
