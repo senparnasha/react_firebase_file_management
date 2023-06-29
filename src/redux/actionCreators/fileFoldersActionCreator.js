@@ -11,6 +11,12 @@ const addFolders = (payload) => ({
   payload,
 });
 
+const setLoading=(payload)=>({
+  type:types.SET_LOADING,
+  payload,
+})
+
+
 export const createFolder = (data) => (dispatch) => {
   fire
     .firestore()
@@ -24,6 +30,7 @@ export const createFolder = (data) => (dispatch) => {
 };
 
 export const getFolders = (userId) => (dispatch) => {
+  dispatch(setLoading(true))
   fire
     .firestore()
     .collection("folders")
@@ -31,6 +38,7 @@ export const getFolders = (userId) => (dispatch) => {
     .get()
     .then(async(folders)=>{
       const foldersData=await folders.docs.map((folder)=>folder.data());
-      dispatch(addFolders(foldersData))
+      dispatch(addFolders(foldersData));
+      dispatch(setLoading(false))
     });
 };
