@@ -11,21 +11,26 @@ const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
     (state) => ({
       userFolders: state.filefolders.userFolders,
       user: state.auth.user,
-      currentFolder: state.filefolders.currentFolder
+      currentFolder: state.filefolders.currentFolder,
     }),
     shallowEqual
   );
 
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const checkFolderAlreadyPresent = (name) => {
-    const folderPresent = userFolders.find((folder) => folder.name === name);
-    if (folderPresent) {
-      return true;
-    } else {
-      return false;
-    }
+     
+      const folderPresent = userFolders
+        .filter((folder) => folder.parent === currentFolder)
+        .find(
+          (folder) => folder.name === name 
+        );
+      if (folderPresent) {
+        return true;
+      } else {
+        return false;
+      }
+    
   };
 
   const handleSubmit = (e) => {
@@ -38,12 +43,12 @@ const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
             name: folderName,
             userId: user.uid,
             createdBy: user.displayName,
-            path: currentFolder === "root"? [] : ["parent folder path!"],
+            path: currentFolder === "root" ? [] : ["parent folder path!"],
             parent: currentFolder,
             lastAccessed: null,
             updatedAt: new Date(),
           };
-          dispatch(createFolder(data))
+          dispatch(createFolder(data));
         } else {
           alert("Folder already present");
         }

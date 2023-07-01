@@ -3,19 +3,22 @@ import "./ShowItems.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileAlt, faFolder } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeFolder } from "../../../../redux/actionCreators/fileFoldersActionCreator";
+
 
 const ShowItems = ({ title, items, type }) => {
+  const navigate = useNavigate();
+  const dispatch=useDispatch();
 
-const navigate=useNavigate();
-
-  const handleDbClick=(itemId)=>{
-if(type==="folder"){
-  navigate(`/dashboard/folder/${itemId}`);
-}else{
-  alert("File clicked")
-}
-  }
-
+  const handleDbClick = (itemId) => {
+    if (type === "folder") {
+      dispatch(changeFolder(itemId))
+      navigate(`/dashboard/folder/${itemId}`);
+    } else {
+      alert("File clicked");
+    }
+  };
 
   return (
     <div className="w-100">
@@ -26,7 +29,7 @@ if(type==="folder"){
             <p
               key={index * 55}
               className="col-md-2 py-3 text-center d-flex flex-column border"
-              onDoubleClick={()=>handleDbClick(item.docId)}
+              onDoubleClick={() => handleDbClick(item.docId)}
             >
               {type === "folder" ? (
                 <FontAwesomeIcon icon={faFolder} size="4x" className="mb-3" />
