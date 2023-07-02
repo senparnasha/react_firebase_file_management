@@ -4,19 +4,22 @@ import { shallowEqual, useSelector } from "react-redux";
 
 const HomeComponent = () => {
   const folders = ["New folder", "new folder 2"];
-  const files = [{data:{name:"New file"}},{data:{name:"New file 2"}}
-    
+  const files = [
+    { data: { name: "New file" } },
+    { data: { name: "New file 2" } },
   ];
 
   const { isLoading, userFolders } = useSelector(
     (state) => ({
       isLoading: state.filefolders.isLoading,
-      userFolders: state.filefolders.userFolders
+      userFolders: state.filefolders.userFolders.filter(
+        (folder) => folder.data.parent === "root"
+      ),
     }),
     shallowEqual
   );
 
-  console.log("==>", userFolders)
+  console.log("==>", userFolders);
 
   return (
     <div className="col-md-12 w-100">
@@ -24,7 +27,11 @@ const HomeComponent = () => {
         <h1 className="display-1 my-5 text-center">Loading...</h1>
       ) : (
         <>
-          <ShowItems title={"Created Folders"} type={"folder"} items={userFolders} />
+          <ShowItems
+            title={"Created Folders"}
+            type={"folder"}
+            items={userFolders}
+          />
           <ShowItems title={"Created Files"} type={"file"} items={files} />
         </>
       )}
