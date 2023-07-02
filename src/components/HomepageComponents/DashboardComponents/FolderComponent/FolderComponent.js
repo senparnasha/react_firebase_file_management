@@ -9,7 +9,7 @@ const FolderComponent = () => {
     (state) => ({
       currentFolderData: state.filefolders.userFolders.find(
         (folder) => folder.docId === folderId
-      ).data,
+      )?.data,
       childFolders: state.filefolders.userFolders.filter(
         (folder) => folder.parent === folderId
       ),

@@ -7,11 +7,13 @@ import { createFolder } from "../../../../redux/actionCreators/fileFoldersAction
 const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
   const [folderName, setFolderName] = useState("");
 
-  const { userFolders, user, currentFolder } = useSelector(
+  const { userFolders, user, currentFolder,currentFolderData } = useSelector(
     (state) => ({
       userFolders: state.filefolders.userFolders,
       user: state.auth.user,
       currentFolder: state.filefolders.currentFolder,
+      currentFolderData: state.filefolders.userFolders.find(
+        folder=>folder.docId===state.filefolders.currentFolder)
     }),
     shallowEqual
   );
@@ -21,9 +23,9 @@ const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
   const checkFolderAlreadyPresent = (name) => {
      
       const folderPresent = userFolders
-        .filter((folder) => folder.parent === currentFolder)
+        .filter((folder) => folder.data.parent === currentFolder)
         .find(
-          (folder) => folder.name === name 
+          (folder) => folder.data.name === name 
         );
       if (folderPresent) {
         return true;
@@ -34,6 +36,8 @@ const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
   };
 
   const handleSubmit = (e) => {
+   console.log("======",currentFolder === "root" ? 
+            [] : [...currentFolderData?.data.path,currentFolder])
     e.preventDefault();
     if (folderName) {
       if (folderName.length > 3) {
@@ -43,7 +47,8 @@ const CreateFolder = ({ setIsCreateFolderModalOpen }) => {
             name: folderName,
             userId: user.uid,
             createdBy: user.displayName,
-            path: currentFolder === "root" ? [] : ["parent folder path!"],
+            path: currentFolder === "root" ? 
+            [] : [...currentFolderData?.data.path,currentFolder],
             parent: currentFolder,
             lastAccessed: null,
             updatedAt: new Date(),
