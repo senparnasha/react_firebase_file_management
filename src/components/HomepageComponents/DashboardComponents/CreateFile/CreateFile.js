@@ -1,11 +1,12 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-// import { createFolder } from "../../../../redux/actionCreators/fileFoldersActionCreator";
+import { createFile} from "../../../../redux/actionCreators/fileFoldersActionCreator";
 
 const CreateFile = ({ setIsCreateFileModalOpen }) => {
   const [fileName, setFileName] = useState("");
+  const [success,setSuccess]=useState(false)
 
   const { userFiles, user, currentFolder,currentFolderData } = useSelector(
     (state) => ({
@@ -19,6 +20,14 @@ const CreateFile = ({ setIsCreateFileModalOpen }) => {
   );
 
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+if(success){
+  setFileName("");
+  setSuccess(false);
+  setIsCreateFileModalOpen(false)
+}
+  },[success])
 
   const checkFileAlreadyPresent = (name) => {
      
@@ -56,8 +65,11 @@ let extension=false;
             parent: currentFolder,
             lastAccessed: null,
             updatedAt: new Date(),
+            extension:extension ? fileName.split(".")[1] : "txt",
+            data: "",
+            url: "",
           };
-          // dispatch(createFolder(data));
+          dispatch(createFile(data,setSuccess));
           console.log("data",data)
         } else {
           alert("File already present");

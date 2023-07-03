@@ -16,27 +16,21 @@ const setLoading = (payload) => ({
   payload,
 });
 
-const setChangeFolder=(payload)=>({
-  type:types.CHANGE_FOLDER,
-  payload,
-})
-
-//files 
-const addFiles=(payload)=>({
-  type:types.ADD_FILES,
+const setChangeFolder = (payload) => ({
+  type: types.CHANGE_FOLDER,
   payload,
 });
 
-const addFile=(payload)=>({
-  type:types.CREATE_FILE,
+//files
+const addFiles = (payload) => ({
+  type: types.ADD_FILES,
   payload,
-})
+});
 
-
-
-
-
-
+const addFile = (payload) => ({
+  type: types.CREATE_FILE,
+  payload,
+});
 
 export const createFolder = (data) => (dispatch) => {
   fire
@@ -45,8 +39,8 @@ export const createFolder = (data) => (dispatch) => {
     .add(data)
     .then(async (folder) => {
       const folderData = await (await folder.get()).data();
-      const folderId=folder.id;
-      dispatch(addFolder({data:folderData, docId:folderId}));
+      const folderId = folder.id;
+      dispatch(addFolder({ data: folderData, docId: folderId }));
       alert("Folder created successfully");
     });
 };
@@ -68,18 +62,29 @@ export const getFolders = (userId) => (dispatch) => {
     });
 };
 
+export const changeFolder = (folderId) => (dispatch) => {
+  dispatch(setChangeFolder(folderId));
+};
 
-export const changeFolder=(folderId)=>(dispatch)=>{
-  dispatch(setChangeFolder(folderId))
-}
+//files
 
+export const getFiles = (userId) => (dispatch) => {
+  console.log(userId);
+};
 
-//files 
-
-export const getFiles=(userId)=>(dispatch)=>{
-  console.log(userId)
-}
-
-export const createFile=(data)=>(dispatch)=>{
-  console.log(data)
-}
+export const createFile = (data, setSuccess) => (dispatch) => {
+  fire
+    .firestore()
+    .collection("files")
+    .add(data)
+    .then(async (file) => {
+      const fileData = await (await file.get()).data();
+      const fileId = file.id;
+      alert("File created successfully!");
+      dispatch(addFile({ data: fileData, docId: fileId }));
+      setSuccess(true);
+    })
+    .catch(() => {
+      setSuccess(false);
+    });
+};
