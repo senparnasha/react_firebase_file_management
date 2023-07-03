@@ -67,7 +67,7 @@ let extension=false;
             updatedAt: new Date(),
             extension:extension ? fileName.split(".")[1] : "txt",
             data: "",
-            url: "",
+            url: null,
           };
           dispatch(createFile(data,setSuccess));
           console.log("data",data)

@@ -9,6 +9,7 @@ import CreateFolder from "../../components/HomepageComponents/DashboardComponent
 import { getFolders } from "../../redux/actionCreators/fileFoldersActionCreator";
 import FolderComponent from "../../components/HomepageComponents/DashboardComponents/FolderComponent/FolderComponent";
 import CreateFile from "../../components/HomepageComponents/DashboardComponents/CreateFile/CreateFile";
+import { getFiles } from "../../redux/actionCreators/fileFoldersActionCreator";
 
 const DashboardPage = () => {
   const [isCreateFolderModalOpen, setIsCreateFolderModalOpen] = useState(false);
@@ -33,6 +34,7 @@ const DashboardPage = () => {
   useEffect(() => {
     if( isLoading && userId){
       dispatch(getFolders(userId))
+      dispatch(getFiles(userId))
     }
   }, [isLoading,userId, dispatch]);
 

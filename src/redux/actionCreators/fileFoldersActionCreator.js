@@ -69,7 +69,20 @@ export const changeFolder = (folderId) => (dispatch) => {
 //files
 
 export const getFiles = (userId) => (dispatch) => {
-  console.log(userId);
+  
+  fire
+  .firestore()
+  .collection("files")
+  .where("userId", "==", userId)
+  .get()
+  .then(async (files) => {
+    const filesData = await files.docs.map((file) => ({
+      data: file.data(),
+      docId: file.id,
+    }));
+    dispatch(addFiles(filesData));
+    
+  });
 };
 
 export const createFile = (data, setSuccess) => (dispatch) => {
