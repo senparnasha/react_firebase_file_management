@@ -2,75 +2,76 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { createFile} from "../../../../redux/actionCreators/fileFoldersActionCreator";
+import { createFile } from "../../../../redux/actionCreators/fileFoldersActionCreator";
 
 const CreateFile = ({ setIsCreateFileModalOpen }) => {
   const [fileName, setFileName] = useState("");
-  const [success,setSuccess]=useState(false)
+  const [success, setSuccess] = useState(false);
 
-  const { userFiles, user, currentFolder,currentFolderData } = useSelector(
+  const { userFiles, user, currentFolder, currentFolderData } = useSelector(
     (state) => ({
       userFiles: state.filefolders.userFiles,
       user: state.auth.user,
       currentFolder: state.filefolders.currentFolder,
       currentFolderData: state.filefolders.userFolders.find(
-        folder=>folder.docId===state.filefolders.currentFolder)
+        (folder) => folder.docId === state.filefolders.currentFolder
+      ),
     }),
     shallowEqual
   );
 
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-if(success){
-  setFileName("");
-  setSuccess(false);
-  setIsCreateFileModalOpen(false)
-}
-  },[success])
+  useEffect(() => {
+    if (success) {
+      setFileName("");
+      setSuccess(false);
+      setIsCreateFileModalOpen(false);
+    }
+  }, [success]);
 
-  const checkFileAlreadyPresent = (name) => {
-     
-      const filePresent = userFiles
-        .filter((file) => file.data.parent === currentFolder)
-        .find(
-          (folder) => folder.data.name === name 
-        );
-      if (filePresent) {
-        return true;
-      } else {
-        return false;
-      }
-    
+  const checkFileAlreadyPresent = (name, ext) => {
+    if(!ext){
+name=name+ ".txt"
+    }
+    const filePresent = userFiles
+      .filter((file) => file.data.parent === currentFolder)
+      .find((folder) => folder.data.name === name);
+    if (filePresent) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const handleSubmit = (e) => {
-   
     e.preventDefault();
     if (fileName) {
       if (fileName.length > 3) {
         //check file extension
-let extension=false;
-        if(fileName.split(".").length > 1){
-          extension=true
+        let extension = false;
+        if (fileName.split(".").length > 1) {
+          extension = true;
         }
-        if (!checkFileAlreadyPresent(fileName)) {
+        if (!checkFileAlreadyPresent(fileName, extension)) {
           const data = {
             createdAt: new Date(),
             name: extension ? fileName : `${fileName}.txt`,
             userId: user.uid,
             createdBy: user.displayName,
-            path: currentFolder === "root" ? 
-            [] : [...currentFolderData?.data.path,currentFolder],
+            path:
+              currentFolder === "root"
+                ? []
+                : [...currentFolderData?.data.path, currentFolder],
             parent: currentFolder,
             lastAccessed: null,
             updatedAt: new Date(),
-            extension:extension ? fileName.split(".")[1] : "txt",
+            extension: extension ? fileName.split(".")[1] : "txt",
             data: "",
             url: null,
           };
-          dispatch(createFile(data,setSuccess));
-          console.log("data",data)
+          dispatch(createFile(data, setSuccess));
+          console.log("data", data);
         } else {
           alert("File already present");
         }
