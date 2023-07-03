@@ -21,6 +21,21 @@ const setChangeFolder=(payload)=>({
   payload,
 })
 
+//files 
+const addFiles=(payload)=>({
+  type:types.ADD_FILES,
+  payload,
+});
+
+const addFile=(payload)=>({
+  type:types.CREATE_FILE,
+  payload,
+})
+
+
+
+
+
 
 
 export const createFolder = (data) => (dispatch) => {
@@ -56,4 +71,15 @@ export const getFolders = (userId) => (dispatch) => {
 
 export const changeFolder=(folderId)=>(dispatch)=>{
   dispatch(setChangeFolder(folderId))
+}
+
+
+//files 
+
+export const getFiles=(userId)=>(dispatch)=>{
+  console.log(userId)
+}
+
+export const createFile=(data)=>(dispatch)=>{
+  console.log(data)
 }

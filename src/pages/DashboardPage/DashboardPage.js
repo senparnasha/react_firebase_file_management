@@ -8,9 +8,11 @@ import HomeComponent from "../../components/HomepageComponents/DashboardComponen
 import CreateFolder from "../../components/HomepageComponents/DashboardComponents/CreateFolder/CreateFolder";
 import { getFolders } from "../../redux/actionCreators/fileFoldersActionCreator";
 import FolderComponent from "../../components/HomepageComponents/DashboardComponents/FolderComponent/FolderComponent";
+import CreateFile from "../../components/HomepageComponents/DashboardComponents/CreateFile/CreateFile";
 
 const DashboardPage = () => {
   const [isCreateFolderModalOpen, setIsCreateFolderModalOpen] = useState(false);
+  const [isCreateFileModalOpen, setIsCreateFileModalOpen] = useState(false);
 
   const {isLoggedIn, isLoading, userId} = useSelector(
     (state) => ({ isLoggedIn: state.auth.isAuthenticated,
@@ -39,8 +41,12 @@ const DashboardPage = () => {
       {isCreateFolderModalOpen && (
         <CreateFolder setIsCreateFolderModalOpen={setIsCreateFolderModalOpen} />
       )}
+      {isCreateFileModalOpen && (
+        <CreateFile setIsCreateFileModalOpen={setIsCreateFileModalOpen} />
+      )}
       <Navbar />
-      <SubBar setIsCreateFolderModalOpen={setIsCreateFolderModalOpen} />
+      <SubBar setIsCreateFolderModalOpen={setIsCreateFolderModalOpen}
+      setIsCreateFileModalOpen={setIsCreateFileModalOpen} />
       <Routes>
         <Route path="" element={<HomeComponent />}/>
         <Route path="folder/:folderId" element={<FolderComponent/>}/>
