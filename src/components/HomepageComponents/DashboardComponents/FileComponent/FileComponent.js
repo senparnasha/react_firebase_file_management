@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./Header";
 import { useParams } from "react-router-dom";
 import { shallowEqual, useSelector } from "react-redux";
+import CodeEditor from "./CodeEditor";
 
 const FileComponent = () => {
     const {fileId}=useParams();
@@ -9,10 +10,11 @@ const FileComponent = () => {
     const {currentFile}= useSelector((state)=>({
 currentFile: state.filefolders.userFiles.find((file)=>file.docId===fileId)
     }),shallowEqual)
+
   return (
     <>
       <Header fileName={currentFile.data.name} />
-      FileComponent: {JSON.stringify(currentFile)}
+     <CodeEditor fileName={currentFile.data.name}/>
     </>
   );
 };
