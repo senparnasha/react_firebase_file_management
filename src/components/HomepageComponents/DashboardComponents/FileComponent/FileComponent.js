@@ -11,7 +11,7 @@ currentFile: state.filefolders.userFiles.find((file)=>file.docId===fileId)
     }),shallowEqual)
   return (
     <>
-      <Header  />
+      <Header fileName={currentFile.data.name} />
       FileComponent: {JSON.stringify(currentFile)}
     </>
   );
