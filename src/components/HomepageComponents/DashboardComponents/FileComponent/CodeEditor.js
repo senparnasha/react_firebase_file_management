@@ -5,9 +5,9 @@ import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlig
 import { duotoneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 
-const CodeEditor = ({fileName}) => {
+const CodeEditor = ({fileName, data, setData}) => {
 
-const [data, setData]= useState(`\n`);
+// const [data, setData]= useState(`\n`);
 
 const codes={
     html: "xml",
