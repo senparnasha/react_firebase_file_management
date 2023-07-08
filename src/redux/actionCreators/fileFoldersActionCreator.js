@@ -32,6 +32,15 @@ const addFile = (payload) => ({
   payload,
 });
 
+const setFileData=(payload) => ({
+  type: types.SET_FILE_DATA,
+  payload,
+});
+
+
+
+
+
 export const createFolder = (data) => (dispatch) => {
   fire
     .firestore()
@@ -101,3 +110,19 @@ export const createFile = (data, setSuccess) => (dispatch) => {
       setSuccess(false);
     });
 };
+
+
+export const updateFileData=(fileId, data)=>(dispatch)=>{
+  fire
+    .firestore()
+    .collection("files")
+    .doc(fileId)
+    .update({data})
+    .then(()=>{
+      dispatch(setFileData({fileId, data}))
+      alert("File saved successfully");
+    })
+    .catch(()=>{
+      alert("Something went wrong")
+    })
+}

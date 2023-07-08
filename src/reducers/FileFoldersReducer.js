@@ -1,4 +1,4 @@
-import * as types from "../redux/actionCreators/actionsTypes/fileFoldersActionTypes"
+import * as types from "../redux/actionCreators/actionsTypes/fileFoldersActionTypes";
 
 const initialState = {
   isLoading: true,
@@ -12,37 +12,48 @@ const initialState = {
 const fileFoldersReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.CREATE_FOLDER:
-      return{
+      return {
         ...state,
-        userFolders:[...state.userFolders,action.payload],
+        userFolders: [...state.userFolders, action.payload],
       };
-      case types.ADD_FOLDERS:
-      return{
+    case types.ADD_FOLDERS:
+      return {
         ...state,
-        userFolders:action.payload,
+        userFolders: action.payload,
       };
-      case types.SET_LOADING:
-      return{
+    case types.SET_LOADING:
+      return {
         ...state,
         isLoading: action.payload,
       };
 
-      case types.CHANGE_FOLDER:
-      return{
+    case types.CHANGE_FOLDER:
+      return {
         ...state,
         currentFolder: action.payload,
       };
-      case types.ADD_FILES:
-      return{
+    case types.ADD_FILES:
+      return {
         ...state,
         userFiles: action.payload,
       };
-      case types.CREATE_FILE:
-      return{
+    case types.CREATE_FILE:
+      return {
         ...state,
         userFiles: [...state.userFiles, action.payload],
       };
 
+    case types.SET_FILE_DATA:
+      const { fileId, data } = action.payload;
+      const allFiles = state.userFiles;
+      const currentFile = allFiles.find((file) => file.docId === fileId);
+      currentFile.data.data = data;
+      return {
+        ...state,
+        userFiles: state.userFiles.map((file) =>
+          file.docId === fileId ? currentFile : file
+        ),
+      };
 
     default:
       return state;

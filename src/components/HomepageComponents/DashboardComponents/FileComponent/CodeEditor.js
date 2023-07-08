@@ -52,7 +52,7 @@ const codes={
             <textarea
             className="code-input w-100"
             value={data}
-            onKeyDown={handleKeyDown}
+            // onKeyDown={handleKeyDown}
             onChange={(e)=>setData(e.target.value)}/>
             <pre className="code-output">
                 <SyntaxHighlighter language={codes[fileName.split(".")[1]]}

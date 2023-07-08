@@ -1,12 +1,14 @@
 import { faAngleLeft, faArrowLeftLong, faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { updateFileData } from '../../../../redux/actionCreators/fileFoldersActionCreator'
 
-const Header = ({fileName, fileData, prevFileData}) => {
+const Header = ({fileName, fileId, fileData, prevFileData}) => {
 
     const navigate= useNavigate()
-
+const dispatch = useDispatch()
 
   return (
     <div>
@@ -21,7 +23,11 @@ const Header = ({fileName, fileData, prevFileData}) => {
 
         <ul className='navbar-nav ms-auto me-5'>
             <li className='nav-item mx-2'>
-                <button className='btn btn-success' disabled={fileData===prevFileData}>
+                <button className='btn btn-success' disabled={fileData===prevFileData}
+                onClick={()=>{
+                    dispatch(updateFileData(fileId, fileData))
+                }}
+                >
                     <FontAwesomeIcon icon={faSave}/> Save
                 </button>
             </li>
