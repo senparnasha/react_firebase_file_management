@@ -126,3 +126,9 @@ export const updateFileData=(fileId, data)=>(dispatch)=>{
       alert("Something went wrong")
     })
 }
+
+
+
+export const uploadFile= (data, setSuccess)=>(dispatch)=>{
+  console.log(data)
+}

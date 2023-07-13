@@ -1,11 +1,13 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { upload } from "@testing-library/user-event/dist/upload";
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { uploadFile } from "../../../../redux/actionCreators/fileFoldersActionCreator";
 // import { createFile } from "../../../../redux/actionCreators/fileFoldersActionCreator";
 
 const UploadFile = ({ setIsFileUploadModalOpen }) => {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const { userFiles, user, currentFolder, currentFolderData } = useSelector(
@@ -30,10 +32,8 @@ const UploadFile = ({ setIsFileUploadModalOpen }) => {
     }
   }, [success]);
 
-  const checkFileAlreadyPresent = (name, ext) => {
-    if (!ext) {
-      name = name + ".txt";
-    }
+  const checkFileAlreadyPresent = (name) => {
+   
     const filePresent = userFiles
       .filter((file) => file.data.parent === currentFolder)
       .find((folder) => folder.data.name === name);
@@ -46,41 +46,36 @@ const UploadFile = ({ setIsFileUploadModalOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (fileName) {
-    //   if (fileName.length > 3) {
-    //     //check file extension
-    //     let extension = false;
-    //     if (fileName.split(".").length > 1) {
-    //       extension = true;
-    //     }
-    //     if (!checkFileAlreadyPresent(fileName, extension)) {
-    //       const data = {
-    //         createdAt: new Date(),
-    //         name: extension ? fileName : `${fileName}.txt`,
-    //         userId: user.uid,
-    //         createdBy: user.displayName,
-    //         path:
-    //           currentFolder === "root"
-    //             ? []
-    //             : [...currentFolderData?.data.path, currentFolder],
-    //         parent: currentFolder,
-    //         lastAccessed: null,
-    //         updatedAt: new Date(),
-    //         extension: extension ? fileName.split(".")[1] : "txt",
-    //         data: "",
-    //         url: null,
-    //       };
-    //       dispatch(createFile(data, setSuccess));
-    //       console.log("data", data);
-    //     } else {
-    //       alert("File already present");
-    //     }
-    //   } else {
-    //     alert("File name must be at least 3 characters");
-    //   }
-    // } else {
-    //   alert("File name cannot be empty");
-    // }
+
+    if (file) {
+      
+      
+        if (!checkFileAlreadyPresent(file.name,)) {
+          const data = {
+            createdAt: new Date(),
+            name: file.name,
+            userId: user.uid,
+            createdBy: user.displayName,
+            path:
+              currentFolder === "root"
+                ? []
+                : [...currentFolderData?.data.path, currentFolder],
+            parent: currentFolder,
+            lastAccessed: null,
+            updatedAt: new Date(),
+            extension: file.name.split(".")[1],
+            data: null,
+            url: "",
+          };
+          dispatch(uploadFile(data, setSuccess));
+          console.log("data", data);
+        } else {
+          alert("File already present");
+        }
+      
+    } else {
+      alert("File name cannot be empty");
+    }
   };
   return (
     <div
@@ -109,9 +104,9 @@ const UploadFile = ({ setIsFileUploadModalOpen }) => {
                 <input
                   type="file"
                   className="form-control"
-                  id="fileName"
-                  placeholder="File Name e.g file.txt, index.html, index.php, index.ts, index.js"
-                  onChange={(e) => setFile(e.target.value)}
+                  id="file"
+                 
+                  onChange={(e) => setFile(e.target.files[0])}
                 />
               </div>
               <button
