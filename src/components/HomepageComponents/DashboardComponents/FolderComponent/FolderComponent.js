@@ -39,6 +39,13 @@ const FolderComponent = () => {
               items={childFiles.filter((file) => file.data.url === null)}
             />
           )}
+          {childFiles.length > 0 && (
+            <ShowItems
+              title={"Uploaded Files"}
+              type={"file"}
+              items={childFiles.filter((file) => file.data.data === null)}
+            />
+          )}
         </>
       ) : (
         <p className="text-center my-5">Empty Folder</p>

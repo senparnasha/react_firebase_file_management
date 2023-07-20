@@ -67,7 +67,7 @@ const UploadFile = ({ setIsFileUploadModalOpen }) => {
             data: null,
             url: "",
           };
-          dispatch(uploadFile(data, setSuccess));
+          dispatch(uploadFile(file,data, setSuccess));
           console.log("data", data);
         } else {
           alert("File already present");

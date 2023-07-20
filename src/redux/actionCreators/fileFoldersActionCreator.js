@@ -32,14 +32,10 @@ const addFile = (payload) => ({
   payload,
 });
 
-const setFileData=(payload) => ({
+const setFileData = (payload) => ({
   type: types.SET_FILE_DATA,
   payload,
 });
-
-
-
-
 
 export const createFolder = (data) => (dispatch) => {
   fire
@@ -78,20 +74,18 @@ export const changeFolder = (folderId) => (dispatch) => {
 //files
 
 export const getFiles = (userId) => (dispatch) => {
-  
   fire
-  .firestore()
-  .collection("files")
-  .where("userId", "==", userId)
-  .get()
-  .then(async (files) => {
-    const filesData = await files.docs.map((file) => ({
-      data: file.data(),
-      docId: file.id,
-    }));
-    dispatch(addFiles(filesData));
-    
-  });
+    .firestore()
+    .collection("files")
+    .where("userId", "==", userId)
+    .get()
+    .then(async (files) => {
+      const filesData = await files.docs.map((file) => ({
+        data: file.data(),
+        docId: file.id,
+      }));
+      dispatch(addFiles(filesData));
+    });
 };
 
 export const createFile = (data, setSuccess) => (dispatch) => {
@@ -111,24 +105,52 @@ export const createFile = (data, setSuccess) => (dispatch) => {
     });
 };
 
-
-export const updateFileData=(fileId, data)=>(dispatch)=>{
+export const updateFileData = (fileId, data) => (dispatch) => {
   fire
     .firestore()
     .collection("files")
     .doc(fileId)
-    .update({data})
-    .then(()=>{
-      dispatch(setFileData({fileId, data}))
+    .update({ data })
+    .then(() => {
+      dispatch(setFileData({ fileId, data }));
       alert("File saved successfully");
     })
-    .catch(()=>{
-      alert("Something went wrong")
-    })
-}
+    .catch(() => {
+      alert("Something went wrong");
+    });
+};
 
+export const uploadFile = (file, data, setSuccess) => (dispatch) => {
+  const uploadFileRef = fire.storage().ref(`files/${data.userId}/${data.name}`);
+  uploadFileRef.put(file).on(
+    "state_changed",
+    (snapshot) => {
+      const progress = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      console.log("uploading" + progress + "%");
+    },
+    (error) => {
+      console.log(error);
+    },
+    async () => {
+      const fileUrl = await uploadFileRef.getDownloadURL();
+      const fullData = { ...data, url: fileUrl };
 
-
-export const uploadFile= (data, setSuccess)=>(dispatch)=>{
-  console.log(data)
-}
+      fire
+        .firestore()
+        .collection("files")
+        .add(fullData)
+        .then(async (file) => {
+          const fileData = await (await file.get()).data();
+          const fileId = file.id;
+          dispatch(addFile({ data: fileData, docId: fileId }));
+          alert("file uploaded successfully!");
+          setSuccess(true);
+        })
+        .catch(() => {
+          setSuccess(false);
+        });
+    }
+  );
+};
