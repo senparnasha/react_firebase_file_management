@@ -62,6 +62,27 @@ const FileComponent = () => {
               <button className="btn btn-sm btn-primary">Download</button>
             </div>
           </div>
+          <div className="w-100 mt-4">
+            {
+              currentFile.data.extension.includes("png") ||
+              currentFile.data.extension.includes("jpg") ||
+              currentFile.data.extension.includes("jpeg") ||
+              currentFile.data.extension.includes("gif") ?(
+                <img 
+                src={currentFile.data.url}
+                alt={currentFile.data.name}
+                className="w-100 h-100"/>
+              ) : (
+                <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+                  <p className="text-center">
+                    File type not supported. Please download the file to view it.
+                  </p>
+                </div>
+              )
+
+
+            }
+          </div>
         </div>
       )}
     </>
