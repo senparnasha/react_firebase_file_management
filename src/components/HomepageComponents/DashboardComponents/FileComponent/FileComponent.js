@@ -43,14 +43,26 @@ const FileComponent = () => {
           />
         </>
       ) : (
-        <>
-          <h1 className="display-1 my-5 text-center  ">
-            Uploaded files preview coming soon{" "}
-          </h1>
-          <button className="btn btn-primary" onClick={() => navigate(-1)}>
-            Go Back
-          </button>
-        </>
+        <div className="position-fixed w-100 h-100 left-0 top-0 bg-dark text-light">
+          <div className="d-flex py-4 px-5 mt-4 justify-content-between align-items-center">
+            <p title={currentFile.data.name} className="my-0">
+              {currentFile.data.name.length > 40
+                ? currentFile.data.name.slice(0, 40) +
+                  "... ." +
+                  currentFile.data.extension
+                : currentFile.data.name}
+            </p>
+            <div className="d-flex align-items-center me-5 ">
+              <button
+                className="btn btn-sm btn-outline-light me-2"
+                onClick={() => navigate(-1)}
+              >
+                Go Back
+              </button>
+              <button className="btn btn-sm btn-primary">Download</button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
